@@ -162,19 +162,10 @@ export const App: React.FC = () => {
       />
 
       {/* Main Workspace Layout */}
-      <main style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '1600px', margin: '0 auto', width: '100%' }}>
+      <main className="app-main">
         {/* Preset Directive Banner */}
-        <div
-          className="glass-panel"
-          style={{
-            padding: '12px 18px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            borderLeft: '4px solid var(--accent-indigo)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="glass-panel objective-banner">
+          <div className="objective-banner-body">
             <span
               style={{
                 fontSize: '0.6875rem',
@@ -188,12 +179,10 @@ export const App: React.FC = () => {
             >
               ACTIVE OBJECTIVE
             </span>
-            <span style={{ fontSize: '0.875rem', color: '#f1f5f9', fontWeight: 500 }}>
-              {activePreset.prompt}
-            </span>
+            <span className="objective-prompt">{activePreset.prompt}</span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="objective-banner-meta">
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
               Est. Execution: <strong style={{ color: '#38bdf8' }}>{activePreset.estimatedTime}</strong>
             </span>
@@ -204,8 +193,8 @@ export const App: React.FC = () => {
         </div>
 
         {/* Section 1: DAG Canvas & Agent Inspector */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 7fr) minmax(320px, 3fr)', gap: '20px' }}>
-          <div>
+        <div className="split-layout">
+          <div className="canvas-scroll">
             <WorkflowCanvas
               agents={agents}
               edges={edges}
@@ -213,7 +202,7 @@ export const App: React.FC = () => {
               onSelectAgent={setSelectedAgentId}
             />
           </div>
-          <div style={{ height: '440px' }}>
+          <div className="inspector-slot">
             <AgentInspector agent={selectedAgent} />
           </div>
         </div>
@@ -222,7 +211,7 @@ export const App: React.FC = () => {
         <TelemetryPanel telemetry={telemetry} isRunning={isRunning} />
 
         {/* Section 3: Dual Output - Streaming Console & Artifact Viewer */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', minHeight: '440px' }}>
+        <div className="dual-layout">
           <StreamingConsole steps={steps} isRunning={isRunning} />
           <ArtifactViewer artifact={artifact} isRunning={isRunning} />
         </div>

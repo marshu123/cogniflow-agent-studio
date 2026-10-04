@@ -25,16 +25,16 @@ export const Header: React.FC<HeaderProps> = ({
   onExportArtifact,
   hasApiKey,
 }) => {
-  return (
+return (
     <header className="app-header">
       {/* Brand & Logo */}
       <div className="logo-badge">
         <div className="logo-icon-box">
           <Cpu size={22} color="#ffffff" />
         </div>
-        <div>
+        <div style={{ minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontWeight: 800, fontSize: '1.15rem', letterSpacing: '-0.02em' }} className="title-gradient">
+            <span style={{ fontWeight: 800, letterSpacing: '-0.02em' }} className="title-gradient header-brand-name">
               CogniFlow
             </span>
             <span
@@ -52,29 +52,23 @@ export const Header: React.FC<HeaderProps> = ({
               STUDIO
             </span>
           </div>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          <p className="header-tagline" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
             Autonomous Multi-Agent Orchestration & Workflow Intelligence
           </p>
         </div>
       </div>
 
       {/* Preset Selector */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>SCENARIO:</span>
+      <div className="header-scenario">
+        <span className="header-scenario-label" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+          SCENARIO:
+        </span>
         <select
+          className="header-select"
           value={selectedPresetId}
           onChange={(e) => onSelectPreset(e.target.value)}
           disabled={isRunning}
-          style={{
-            background: 'var(--bg-input)',
-            color: 'var(--text-primary)',
-            border: '1px solid var(--border-subtle)',
-            padding: '7px 12px',
-            borderRadius: '8px',
-            fontSize: '0.8125rem',
-            outline: 'none',
-            cursor: isRunning ? 'not-allowed' : 'pointer',
-          }}
+          style={{ cursor: isRunning ? 'not-allowed' : 'pointer' }}
         >
           {WORKFLOW_PRESETS.map((p) => (
             <option key={p.id} value={p.id}>
@@ -85,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Control Actions */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div className="header-actions">
         {/* Settings / API Key */}
         <button
           onClick={onOpenSettings}

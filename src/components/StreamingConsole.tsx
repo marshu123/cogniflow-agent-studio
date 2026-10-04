@@ -11,11 +11,14 @@ export const StreamingConsole: React.FC<StreamingConsoleProps> = ({ steps, isRun
   const [filter, setFilter] = useState<'all' | 'thought' | 'action' | 'critique'>('all');
   const [expandedStepIds, setExpandedStepIds] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll on new steps
+  // Scroll the console itself, not the document. scrollIntoView() walks up to
+  // the viewport as well, which dragged the whole page down mid-stream.
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const body = bodyRef.current;
+    if (!body) return;
+    body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
   }, [steps]);
 
   const toggleExpand = (id: string) => {
@@ -54,8 +57,8 @@ export const StreamingConsole: React.FC<StreamingConsoleProps> = ({ steps, isRun
   return (
     <div className="terminal-view">
       {/* Console Header */}
-      <div className="terminal-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div className="terminal-header console-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flexWrap: 'wrap' }}>
           <Terminal size={15} color="#38bdf8" />
           <span style={{ fontWeight: 700, fontSize: '0.8125rem', color: 'var(--text-primary)' }}>
             Real-Time Streaming Execution Console
@@ -68,24 +71,14 @@ export const StreamingConsole: React.FC<StreamingConsoleProps> = ({ steps, isRun
           )}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           {/* Filters */}
-          <div style={{ display: 'flex', gap: '4px', background: 'rgba(0, 0, 0, 0.3)', padding: '2px', borderRadius: '6px' }}>
+          <div className="console-filters">
             {(['all', 'thought', 'action', 'critique'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setFilter(tab)}
-                style={{
-                  background: filter === tab ? 'rgba(255, 255, 255, 0.12)' : 'transparent',
-                  color: filter === tab ? '#ffffff' : 'var(--text-muted)',
-                  border: 'none',
-                  borderRadius: '4px',
-                  padding: '2px 8px',
-                  fontSize: '0.6875rem',
-                  cursor: 'pointer',
-                  textTransform: 'capitalize',
-                  fontWeight: 600,
-                }}
+                className={`console-filter-btn ${filter === tab ? 'active' : ''}`}
               >
                 {tab}
               </button>
@@ -93,27 +86,14 @@ export const StreamingConsole: React.FC<StreamingConsoleProps> = ({ steps, isRun
           </div>
 
           {/* Copy Button */}
-          <button
-            onClick={handleCopyLogs}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '0.6875rem',
-            }}
-            title="Copy trace log"
-          >
+          <button onClick={handleCopyLogs} className="console-icon-btn" title="Copy trace log" aria-label="Copy trace log">
             {copied ? <Check size={13} color="#10b981" /> : <Copy size={13} />}
           </button>
         </div>
       </div>
 
       {/* Console Stream Body */}
-      <div className="terminal-body">
+      <div className="terminal-body" ref={bodyRef}>
         {filteredSteps.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '30px 0', color: 'var(--text-muted)', fontSize: '0.75rem' }}>
             {isRunning ? 'Initiating supervisor task decomposition...' : 'Console idle. Click "Execute Workflow" to stream agent execution.'}
@@ -137,8 +117,8 @@ export const StreamingConsole: React.FC<StreamingConsoleProps> = ({ steps, isRun
                 }}
               >
                 {/* Step Metadata Bar */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className="step-meta">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flexWrap: 'wrap' }}>
                     <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
                       #{step.stepIndex}
                     </span>
@@ -148,11 +128,9 @@ export const StreamingConsole: React.FC<StreamingConsoleProps> = ({ steps, isRun
                     {getStepBadge(step.type)}
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '0.625rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                      {step.tokens} tokens • {step.timestamp}
-                    </span>
-                  </div>
+                  <span className="step-meta-right">
+                    {step.tokens} tokens • {step.timestamp}
+                  </span>
                 </div>
 
                 {/* Content Message */}
@@ -217,7 +195,6 @@ export const StreamingConsole: React.FC<StreamingConsoleProps> = ({ steps, isRun
             );
           })
         )}
-        <div ref={bottomRef} />
       </div>
     </div>
   );

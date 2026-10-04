@@ -27,7 +27,7 @@ export const TelemetryPanel: React.FC<TelemetryPanelProps> = ({ telemetry, isRun
       </div>
 
       {/* Metrics 4-Box Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+      <div className="metric-grid">
         {/* Token Velocity */}
         <div className="metric-box">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -80,30 +80,19 @@ export const TelemetryPanel: React.FC<TelemetryPanelProps> = ({ telemetry, isRun
       </div>
 
       {/* Secondary Sub-Metrics Bar */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          background: 'rgba(0, 0, 0, 0.3)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: '8px',
-          padding: '8px 12px',
-          fontSize: '0.75rem',
-        }}
-      >
+      <div className="sub-metrics">
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{ color: 'var(--text-muted)' }}>Tool Calls:</span>
           <span style={{ fontWeight: 700, fontFamily: 'var(--font-mono)', color: '#67e8f9' }}>
             {telemetry.totalToolCalls}
           </span>
         </div>
-        <div style={{ color: 'var(--border-subtle)' }}>|</div>
+        <div className="sub-metrics-divider">|</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{ color: 'var(--text-muted)' }}>Quality Pass Rate:</span>
           <span style={{ fontWeight: 700, color: '#10b981' }}>{telemetry.taskSuccessRate}%</span>
         </div>
-        <div style={{ color: 'var(--border-subtle)' }}>|</div>
+        <div className="sub-metrics-divider">|</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{ color: 'var(--text-muted)' }}>Reflection Loops:</span>
           <span style={{ fontWeight: 700, color: '#ec4899' }}>Verified</span>

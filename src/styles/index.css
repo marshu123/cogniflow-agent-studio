@@ -299,6 +299,8 @@ body {
   font-size: 0.75rem;
   padding: 2px 8px;
   border-radius: 6px;
+  /* keep tool names like memory_retriever from breaking mid-identifier */
+  white-space: nowrap;
 }
 
 /* Code & Console Box */
@@ -386,4 +388,561 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* ==========================================================================
+   Responsive layer
+
+   Everything above this line is the original desktop design and is left
+   untouched. Below, each rule either sets a phone-friendly base that is
+   restored from 1024px up, or only applies below 1024px. That is what keeps
+   the desktop rendering pixel-identical.
+   ========================================================================== */
+
+/* ---- Page shell -------------------------------------------------------- */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 14px 28px;
+}
+
+@media (min-width: 1024px) {
+  .app-main {
+    padding: 20px 24px;
+    gap: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+}
+
+/* Grid children default to min-width:auto, so one wide <pre> inside them
+   pushes the entire page sideways. These all need to be allowed to shrink. */
+.app-main > *,
+.split-layout > *,
+.dual-layout > *,
+.metric-grid > * {
+  min-width: 0;
+}
+
+/* ---- Layout grids ------------------------------------------------------ */
+.split-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+@media (min-width: 1024px) {
+  .split-layout {
+    grid-template-columns: minmax(0, 7fr) minmax(320px, 3fr);
+    gap: 20px;
+  }
+}
+
+.dual-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+@media (min-width: 1024px) {
+  .dual-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 20px;
+    min-height: 440px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .inspector-slot {
+    height: 440px;
+  }
+}
+
+/* ---- Objective banner -------------------------------------------------- */
+.objective-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 12px;
+  border-left: 4px solid var(--accent-indigo);
+}
+
+.objective-banner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.objective-banner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+}
+
+.objective-prompt {
+  font-size: 0.8125rem;
+  color: #f1f5f9;
+  font-weight: 500;
+  /* break-word, not anywhere: "anywhere" also shrinks the min-content size
+     and would re-balance the banner's flex layout on desktop */
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+  .objective-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+  }
+
+  .objective-banner-body {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .objective-prompt {
+    font-size: 0.875rem;
+  }
+
+  .objective-banner-meta {
+    gap: 12px;
+    flex-wrap: nowrap;
+  }
+}
+
+/* ---- Header ------------------------------------------------------------ */
+.header-select {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  /* 16px, not 13px: anything smaller makes iOS Safari zoom the page on focus */
+  font-size: 16px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 7px 10px;
+  outline: none;
+  text-overflow: ellipsis;
+}
+
+.header-scenario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.header-scenario-label {
+  display: none;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.header-tagline {
+  display: none;
+}
+
+.header-brand-name {
+  font-size: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .header-select {
+    width: auto;
+    min-height: 0;
+    font-size: 0.8125rem;
+    padding: 7px 12px;
+  }
+
+  .header-scenario {
+    width: auto;
+  }
+
+  .header-scenario-label {
+    display: inline;
+  }
+
+  .header-actions {
+    width: auto;
+    gap: 10px;
+  }
+
+  .header-tagline {
+    display: block;
+  }
+
+  .header-brand-name {
+    font-size: 1.15rem;
+  }
+}
+
+/* ---- Telemetry --------------------------------------------------------- */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (min-width: 900px) {
+  .metric-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.sub-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+}
+
+.sub-metrics-divider {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .sub-metrics {
+    justify-content: space-around;
+    /* the original had no gap, only space-around distribution */
+    gap: 0;
+  }
+
+  .sub-metrics-divider {
+    display: block;
+    color: var(--border-subtle);
+  }
+}
+
+/* ---- DAG canvas --------------------------------------------------------
+   The graph is authored with nodes out to x=640 at 190px wide, so it needs
+   ~840px of horizontal room by construction. Rather than let
+   overflow:hidden guillotine the outer nodes on a phone, the canvas is
+   panned. At >=1400px the column is already wider than that, so no
+   scrollbar appears and the desktop view is unchanged. */
+.canvas-scroll {
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.workflow-canvas-container {
+  min-width: 840px;
+}
+
+/* ---- Streaming console ------------------------------------------------- */
+.console-header {
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.console-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px;
+  border-radius: 6px;
+}
+
+.console-filter-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.console-filter-btn.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.console-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6875rem;
+}
+
+.step-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  /* the original desktop layout pushed the token count to the far edge */
+  .step-meta {
+    justify-content: space-between;
+  }
+}
+
+.step-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ---- Artifact viewer --------------------------------------------------- */
+.artifact-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.artifact-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.artifact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---- Modal -------------------------------------------------------------
+   16px on the text input is deliberate: iOS Safari zooms the whole page on
+   focus for any smaller font size and does not zoom back out on blur. */
+.modal-content {
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 18px;
+}
+
+.modal-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex: none;
+}
+
+.modal-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-input {
+  width: 100%;
+  min-width: 0;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 11px 12px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  outline: none;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 16px;
+}
+
+.modal-actions-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-text-reset {
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  text-decoration: underline;
+  min-height: 44px;
+  text-align: left;
+}
+
+@media (min-width: 480px) {
+  .modal-input-row {
+    flex-direction: row;
+  }
+
+  .modal-input {
+    flex: 1;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .modal-content {
+    padding: 24px;
+  }
+
+  .modal-actions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-actions-right {
+    flex-direction: row;
+  }
+
+  .modal-text-reset {
+    min-height: 0;
+  }
+}
+
+/* ---- Touch sizing, phones and tablets only ----------------------------
+   !important is needed because several components set padding through
+   inline styles, which would otherwise beat the class. */
+@media (max-width: 1023px) {
+  .app-header {
+    height: auto;
+    min-height: 56px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px;
+    padding: 10px 14px !important;
+  }
+
+  .btn-compact {
+    min-height: 44px;
+    padding: 8px 12px !important;
+  }
+
+  .terminal-header {
+    padding: 8px 10px;
+  }
+
+.terminal-body {
+  padding: 12px;
+  max-height: 62vh;
+  }
+
+  /* Touch-sized console controls. Kept below 1024px so the compact desktop
+     console header is left exactly as it was. */
+  .console-filter-btn {
+    min-height: 44px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  .console-icon-btn {
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 6px;
+  }
+
+  .console-header {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .metric-box {
+    padding: 10px;
+  }
+
+  .metric-val {
+    font-size: 1.15rem;
+  }
+
+  /* long generated filenames must break on a phone; on desktop the original
+     left them alone so the artifact header keeps its intrinsic width */
+  .artifact-title-name {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (min-width: 1024px) {
+  .btn-compact {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ---- Overflow guards --------------------------------------------------- */
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.objective-prompt,
+.step-meta,
+.terminal-body,
+.modal-content,
+.metric-box {
+  overflow-wrap: break-word;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -46,13 +46,13 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content animate-fade-in" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ background: 'rgba(99, 102, 241, 0.2)', padding: '6px', borderRadius: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', marginBottom: '16px' }}>
+          <div className="modal-title-row">
+            <div style={{ background: 'rgba(99, 102, 241, 0.2)', padding: '6px', borderRadius: '8px', flexShrink: 0 }}>
               <Key size={18} color="#6366f1" />
             </div>
-            <div>
-              <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            <div style={{ minWidth: 0 }}>
+              <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                 Runtime Model & API Configuration
               </h2>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -60,10 +60,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-          >
+          <button onClick={onClose} className="modal-close" aria-label="Close settings">
             <X size={18} />
           </button>
         </div>
@@ -97,29 +94,22 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
           <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>
             Google Gemini API Key (Optional)
           </label>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="modal-input-row">
             <input
               type="password"
               placeholder="AIzaSy..."
               value={inputKey}
               onChange={(e) => setInputKey(e.target.value)}
-              style={{
-                flex: 1,
-                background: 'var(--bg-input)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: '8px',
-                padding: '9px 12px',
-                color: 'var(--text-primary)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.8125rem',
-                outline: 'none',
-              }}
+              className="modal-input"
+              autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <button
               onClick={handleTestKey}
               disabled={testing || !inputKey.trim()}
               className="btn-secondary"
-              style={{ padding: '0 12px', fontSize: '0.75rem' }}
             >
               {testing ? 'Testing...' : 'Verify'}
             </button>
@@ -141,22 +131,12 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({
         </div>
 
         {/* Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
-          <button
-            onClick={handleUseSimulation}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: '#38bdf8',
-              fontSize: '0.8125rem',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-            }}
-          >
+        <div className="modal-actions">
+          <button onClick={handleUseSimulation} className="modal-text-reset">
             Clear / Revert to Swarm Simulation
           </button>
 
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="modal-actions-right">
             <button onClick={onClose} className="btn-secondary">
               Cancel
             </button>

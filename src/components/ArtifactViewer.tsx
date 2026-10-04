@@ -50,19 +50,10 @@ export const ArtifactViewer: React.FC<ArtifactViewerProps> = ({ artifact, isRunn
   return (
     <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       {/* Header */}
-      <div
-        style={{
-          padding: '12px 16px',
-          borderBottom: '1px solid var(--border-subtle)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: 'rgba(15, 23, 42, 0.7)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div className="artifact-header">
+        <div className="artifact-title">
           {artifact.type === 'code' ? <FileCode size={16} color="#10b981" /> : <FileText size={16} color="#38bdf8" />}
-          <span style={{ fontWeight: 700, fontSize: '0.8125rem', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+          <span className="artifact-title-name" style={{ fontWeight: 700, fontSize: '0.8125rem', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
             {artifact.title}
           </span>
           <span
@@ -80,14 +71,12 @@ export const ArtifactViewer: React.FC<ArtifactViewerProps> = ({ artifact, isRunn
         </div>
 
         {/* Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="artifact-actions">
           {artifact.type === 'code' && (
             <button
               onClick={handleRunSandbox}
-              className="btn-secondary"
+              className="btn-secondary btn-compact"
               style={{
-                padding: '4px 10px',
-                fontSize: '0.75rem',
                 borderColor: sandboxExecuted ? 'rgba(16, 185, 129, 0.5)' : undefined,
                 color: sandboxExecuted ? '#6ee7b7' : undefined,
               }}
@@ -97,12 +86,12 @@ export const ArtifactViewer: React.FC<ArtifactViewerProps> = ({ artifact, isRunn
             </button>
           )}
 
-          <button onClick={handleCopy} className="btn-secondary" style={{ padding: '4px 10px', fontSize: '0.75rem' }}>
+          <button onClick={handleCopy} className="btn-secondary btn-compact">
             {copied ? <Check size={13} color="#10b981" /> : <Copy size={13} />}
             <span>{copied ? 'Copied' : 'Copy'}</span>
           </button>
 
-          <button onClick={handleDownload} className="btn-secondary" style={{ padding: '4px 10px', fontSize: '0.75rem' }}>
+          <button onClick={handleDownload} className="btn-secondary btn-compact">
             <Download size={13} />
             <span>Download</span>
           </button>
